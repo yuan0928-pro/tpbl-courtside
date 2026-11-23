@@ -4,83 +4,105 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#101827">
-  <meta name="description" content="TPBL COURTSIDE 台灣職業籃球數據中心">
-  <title>TPBL COURTSIDE｜籃球數據中心</title>
+  <meta name="description" content="TPBL COURTSIDE：台灣職業籃球非官方球迷數據平台">
+  <title>TPBL COURTSIDE｜聯盟數據中心</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <header class="topbar">
   <a class="brand" href="#" aria-label="TPBL Courtside 首頁"><span class="brand-mark">T</span><span>TPBL <b>COURTSIDE</b><small>TAIWAN PRO BASKETBALL DATA</small></span></a>
-  <span class="season">2026–27 SEASON</span>
+  <div class="top-right"><span class="season">2026–27 SEASON</span><span class="unofficial">UNOFFICIAL FAN PROJECT</span></div>
 </header>
 <main class="wrap">
   <section class="hero">
     <div class="eyebrow">THE GAME. THE NUMBERS. THE STORY.</div>
     <h1>每一場比賽，<em>都有數據。</em></h1>
-    <p>台灣職業籃球數據中心｜球隊・球員・比賽・排行榜</p>
-    <div class="hero-bottom"><span class="live-dot"></span> 球迷自製數據平台 <span class="hero-note">非 TPBL 官方網站</span></div>
+    <p>台灣職業籃球數據中心｜球隊・球員・賽事・排行榜</p>
+    <div class="hero-bottom"><span class="live-dot"></span> 七隊完整聯盟架構 <span class="hero-note">非 TPBL 官方網站・非即時比分服務</span></div>
   </section>
 
   <nav class="tabs" aria-label="主要導覽">
     <button class="tab active" data-view="overview">總覽</button>
+    <button class="tab" data-view="teams">球隊資料庫</button>
     <button class="tab" data-view="players">球員資料庫</button>
-    <button class="tab" data-view="teams">球隊排名</button>
-    <button class="tab" data-view="games">比賽紀錄</button>
+    <button class="tab" data-view="games">賽事中心</button>
+    <button class="tab" data-view="leaders">數據排行榜</button>
     <button class="tab" data-view="manage">數據管理</button>
   </nav>
 
   <section class="view active" id="overview">
-    <div class="section-heading"><div><span class="eyebrow dark">LEAGUE DASHBOARD</span><h2>聯盟數據總覽</h2></div><span class="tag">示範資料</span></div>
+    <div class="section-heading"><div><span class="eyebrow dark">LEAGUE DASHBOARD</span><h2>聯盟數據總覽</h2></div><span class="tag">2026–27 賽季</span></div>
     <div class="metric-grid">
-      <article class="metric-card"><span>球隊數量</span><strong id="teamCount">7</strong><small>示範球隊名單</small></article>
-      <article class="metric-card"><span>球員資料</span><strong id="playerCount">6</strong><small>目前資料筆數</small></article>
-      <article class="metric-card"><span>比賽紀錄</span><strong id="gameCount">3</strong><small>目前資料筆數</small></article>
-      <article class="metric-card accent"><span>數據狀態</span><strong>DEMO</strong><small>尚未串接官方即時資料</small></article>
+      <article class="metric-card"><span>參賽球隊</span><strong id="teamCount">7</strong><small>TPBL 官方列示隊伍</small></article>
+      <article class="metric-card"><span>球員資料</span><strong id="playerCount">0</strong><small>已建立資料筆數</small></article>
+      <article class="metric-card"><span>比賽紀錄</span><strong id="gameCount">0</strong><small>已建立賽事筆數</small></article>
+      <article class="metric-card accent"><span>資料狀態</span><strong id="dataStatus">待匯入</strong><small>不以虛構數據填補空缺</small></article>
     </div>
     <div class="content-grid">
       <article class="panel">
-        <div class="panel-title"><h3>焦點球員</h3><span class="muted">示範場均數據</span></div>
-        <div id="spotlight" class="spotlight"></div>
+        <div class="panel-title"><h3>聯盟七隊</h3><span class="muted">2026–27</span></div>
+        <div id="teamTiles" class="team-tiles"></div>
       </article>
       <article class="panel">
-        <div class="panel-title"><h3>近期比賽</h3><button class="text-button" data-goto="games">查看全部 →</button></div>
-        <div id="recentGames"></div>
+        <div class="panel-title"><h3>最新賽事紀錄</h3><button class="text-button" data-goto="games">查看全部 →</button></div>
+        <div id="recentGames"><p class="empty">目前尚無已核對的賽事資料。</p></div>
       </article>
     </div>
-    <p class="notice">⚠️ 本網站目前使用虛構示範資料，並非真實賽事結果、官方球員名單或即時統計。請勿將示範數據視為正式紀錄。</p>
-  </section>
-
-  <section class="view" id="players">
-    <div class="section-heading"><div><span class="eyebrow dark">PLAYER DATABASE</span><h2>球員資料庫</h2></div><span class="tag">可自行新增</span></div>
-    <div class="toolbar"><input id="playerSearch" type="search" placeholder="搜尋球員或球隊…" aria-label="搜尋球員"><select id="statSelect" aria-label="排序數據"><option value="pts">得分 PPG</option><option value="reb">籃板 RPG</option><option value="ast">助攻 APG</option><option value="stl">抄截 SPG</option><option value="blk">阻攻 BPG</option></select></div>
-    <div class="table-wrap"><table><thead><tr><th>球員</th><th>球隊</th><th>PTS</th><th>REB</th><th>AST</th><th>STL</th><th>BLK</th><th>FG%</th><th>3P%</th><th>FT%</th></tr></thead><tbody id="playersTable"></tbody></table></div>
-    <p class="muted small">數據欄位可在「數據管理」新增；目前示範球員資料均為虛構。</p>
+    <div class="source-panel">
+      <div><b>官方資料入口</b><p class="muted small">可前往 TPBL 官方頁面查核賽程、球員數據與球隊數據；本網站目前不會假裝已自動同步官方資料。</p></div>
+      <div class="source-links">
+        <a href="https://tpbl.basketball/" target="_blank" rel="noopener">TPBL 官方網站 ↗</a>
+        <a href="https://tpbl.basketball/schedule" target="_blank" rel="noopener">官方賽程 ↗</a>
+        <a href="https://tpbl.basketball/stats/players" target="_blank" rel="noopener">官方球員數據 ↗</a>
+        <a href="https://tpbl.basketball/stats/teams" target="_blank" rel="noopener">官方球隊數據 ↗</a>
+      </div>
+    </div>
+    <p class="notice">資料原則：官方可查資料優先；人工補充必須標示來源與日期；未能核實的數據顯示「待確認」。目前網站尚未串接 TPBL 官方 API，因此不提供即時更新保證。</p>
   </section>
 
   <section class="view" id="teams">
-    <div class="section-heading"><div><span class="eyebrow dark">TEAM STANDINGS</span><h2>球隊排名</h2></div><span class="tag">示範戰績</span></div>
-    <div class="table-wrap"><table><thead><tr><th>#</th><th>球隊</th><th>勝</th><th>敗</th><th>勝率</th><th>勝差</th></tr></thead><tbody id="teamsTable"></tbody></table></div>
-    <p class="muted small">排名依本網站資料計算，不代表官方聯盟戰績。</p>
+    <div class="section-heading"><div><span class="eyebrow dark">TEAM DIRECTORY</span><h2>球隊資料庫</h2></div><span class="tag">七支參賽球隊</span></div>
+    <div id="teamsGrid" class="teams-grid"></div>
+    <div class="panel table-panel">
+      <div class="panel-title"><h3>依本站已登錄賽果計算的戰績</h3><span class="muted small">不是官方即時排名</span></div>
+      <div class="table-wrap"><table><thead><tr><th>#</th><th>球隊</th><th>出賽</th><th>勝</th><th>敗</th><th>勝率</th><th>勝差</th></tr></thead><tbody id="teamsTable"></tbody></table></div>
+    </div>
+  </section>
+
+  <section class="view" id="players">
+    <div class="section-heading"><div><span class="eyebrow dark">PLAYER DATABASE</span><h2>球員資料庫</h2></div><span class="tag">可搜尋・可排序</span></div>
+    <div class="toolbar"><input id="playerSearch" type="search" placeholder="搜尋球員或球隊…" aria-label="搜尋球員"><select id="playerTeamFilter" aria-label="依球隊篩選"></select><select id="statSelect" aria-label="排序數據"><option value="pts">得分 PPG</option><option value="reb">籃板 RPG</option><option value="ast">助攻 APG</option><option value="stl">抄截 SPG</option><option value="blk">阻攻 BPG</option><option value="tp">三分命中率</option></select></div>
+    <div class="table-wrap"><table><thead><tr><th>球員</th><th>球隊</th><th>PTS</th><th>REB</th><th>AST</th><th>STL</th><th>BLK</th><th>FG%</th><th>3P%</th><th>FT%</th><th>資料來源</th></tr></thead><tbody id="playersTable"></tbody></table></div>
+    <p class="muted small">球員統計欄位為場均數據；請在新增資料時確認官方統計口徑與賽季範圍一致。</p>
   </section>
 
   <section class="view" id="games">
-    <div class="section-heading"><div><span class="eyebrow dark">GAME CENTER</span><h2>比賽紀錄</h2></div><span class="tag">賽事資料庫</span></div>
+    <div class="section-heading"><div><span class="eyebrow dark">GAME CENTER</span><h2>賽事中心</h2></div><span class="tag">賽程・賽果</span></div>
     <div id="gamesList" class="games-list"></div>
   </section>
 
+  <section class="view" id="leaders">
+    <div class="section-heading"><div><span class="eyebrow dark">STAT LEADERS</span><h2>數據排行榜</h2></div><span class="tag">本站已登錄球員</span></div>
+    <div id="leaderGrid" class="leader-grid"></div>
+    <p class="notice">排行榜只會使用本站已登錄且有來源標記的球員資料；資料筆數不足時不會推測或補造排名。</p>
+  </section>
+
   <section class="view" id="manage">
-    <div class="section-heading"><div><span class="eyebrow dark">DATA MANAGEMENT</span><h2>數據管理</h2></div><span class="tag">本機儲存</span></div>
+    <div class="section-heading"><div><span class="eyebrow dark">DATA MANAGEMENT</span><h2>數據管理</h2></div><span class="tag">人工補充・來源追蹤</span></div>
+    <div class="admin-note"><b>資料輸入提醒</b><p>請優先依 TPBL 官方網站的同一賽季資料登錄。若是人工補充，請填寫來源網址或說明與資料日期。此版本資料儲存在目前瀏覽器，尚未與其他訪客共用。</p></div>
     <div class="content-grid">
       <form class="panel form" id="addGameForm">
         <h3>新增比賽紀錄</h3>
         <label>比賽日期<input id="gameDate" type="date" required></label>
         <label>主隊<select id="homeTeam"></select></label>
         <label>客隊<select id="awayTeam"></select></label>
-        <div class="two-fields"><label>主隊得分<input id="homeScore" type="number" min="0" required value="0"></label><label>客隊得分<input id="awayScore" type="number" min="0" required value="0"></label></div>
+        <div class="two-fields"><label>主隊得分<input id="homeScore" type="number" min="0" required></label><label>客隊得分<input id="awayScore" type="number" min="0" required></label></div>
+        <label>資料來源類型<select id="gameSourceType"><option value="official">TPBL 官方資料</option><option value="manual">人工補充</option></select></label>
+        <label>來源網址／說明<input id="gameSource" placeholder="貼上官方賽事頁網址或補充說明" required></label>
         <button class="primary" type="submit">＋ 儲存比賽</button><p class="form-message" id="gameMessage" role="status"></p>
       </form>
       <form class="panel form" id="addPlayerForm">
-        <h3>新增球員數據</h3>
+        <h3>新增球員場均數據</h3>
         <label>球員姓名<input id="playerName" required placeholder="輸入球員姓名"></label>
         <label>所屬球隊<select id="playerTeam"></select></label>
         <div class="three-fields">
@@ -93,15 +115,18 @@
           <label>3P%<input id="pTp" type="number" min="0" max="100" step="0.1" value="0"></label>
           <label>FT%<input id="pFt" type="number" min="0" max="100" step="0.1" value="0"></label>
         </div>
+        <label>資料來源類型<select id="playerSourceType"><option value="official">TPBL 官方資料</option><option value="manual">人工補充</option></select></label>
+        <label>來源網址／說明<input id="playerSource" placeholder="貼上官方球員數據頁或補充說明" required></label>
+        <label>資料日期<input id="playerUpdated" type="date" required></label>
         <button class="primary" type="submit">＋ 新增球員</button><p class="form-message" id="playerMessage" role="status"></p>
       </form>
     </div>
     <div class="panel export-panel">
-      <div><h3>資料備份與還原</h3><p class="muted small">資料目前儲存在使用者的瀏覽器。清除瀏覽器資料或換裝置不會自動同步。</p></div>
-      <div class="button-row"><button class="secondary" id="exportBtn" type="button">匯出 JSON 備份</button><label class="upload-button">匯入 JSON 備份<input id="importFile" type="file" accept=".json,application/json" hidden></label><button class="danger" id="resetBtn" type="button">重設示範資料</button></div>
+      <div><h3>資料備份與還原</h3><p class="muted small">匯出可保留球員、比賽及來源資訊。更換瀏覽器或裝置時請手動匯入備份。</p></div>
+      <div class="button-row"><button class="secondary" id="exportBtn" type="button">匯出 JSON 備份</button><label class="upload-button">匯入 JSON 備份<input id="importFile" type="file" accept=".json,application/json" hidden></label><button class="danger" id="clearBtn" type="button">清空本站資料</button></div>
     </div>
   </section>
-  <footer><span>TPBL COURTSIDE</span><span>UNOFFICIAL FAN-MADE PROJECT · 2026</span></footer>
+  <footer><span>TPBL COURTSIDE</span><span>UNOFFICIAL FAN-MADE PROJECT · 2026–27</span></footer>
 </main>
 <script src="app.js"></script>
 </body>
