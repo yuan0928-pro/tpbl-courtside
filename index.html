@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#101827">
   <meta name="description" content="TPBL COURTSIDE：台灣職業籃球非官方球迷數據平台">
-  <title>TPBL COURTSIDE｜聯盟數據中心</title>
+  <title>TPBL COURTSIDE｜PRO 數據中心</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -15,10 +15,10 @@
 </header>
 <main class="wrap">
   <section class="hero">
-    <div class="eyebrow">THE GAME. THE NUMBERS. THE STORY.</div>
+    <div class="eyebrow">PRO DATA CENTER · 2026–27</div>
     <h1>每一場比賽，<em>都有數據。</em></h1>
-    <p>台灣職業籃球數據中心｜球隊・球員・賽事・排行榜</p>
-    <div class="hero-bottom"><span class="live-dot"></span> 七隊完整聯盟架構 <span class="hero-note">非 TPBL 官方網站・非即時比分服務</span></div>
+    <p>台灣職業籃球數據中心｜七隊・球員・賽事・進階統計</p>
+    <div class="hero-bottom"><span class="live-dot"></span> 七隊完整聯盟資料庫 <span class="hero-note">非官方球迷數據平台</span></div>
   </section>
 
   <nav class="tabs" aria-label="主要導覽">
@@ -44,7 +44,7 @@
         <div id="teamTiles" class="team-tiles"></div>
       </article>
       <article class="panel">
-        <div class="panel-title"><h3>最新賽事紀錄</h3><button class="text-button" data-goto="games">查看全部 →</button></div>
+        <div class="panel-title"><h3>近期賽事紀錄</h3><button class="text-button" data-goto="games">查看全部 →</button></div>
         <div id="recentGames"><p class="empty">目前尚無已核對的賽事資料。</p></div>
       </article>
     </div>
@@ -57,11 +57,11 @@
         <a href="https://tpbl.basketball/stats/teams" target="_blank" rel="noopener">官方球隊數據 ↗</a>
       </div>
     </div>
-    <p class="notice">資料原則：官方可查資料優先；人工補充必須標示來源與日期；未能核實的數據顯示「待確認」。目前網站尚未串接 TPBL 官方 API，因此不提供即時更新保證。</p>
+    <p class="notice">資料原則：TPBL 官方資料優先。官方網站目前顯示 2026–27 球員數據與賽程清單尚無資料，因此本站不會自行捏造球員數據或賽果。官方隊徽使用 TPBL 官網公開頁面提供的圖檔。</p>
   </section>
 
   <section class="view" id="teams">
-    <div class="section-heading"><div><span class="eyebrow dark">TEAM DIRECTORY</span><h2>球隊資料庫</h2></div><span class="tag">七支參賽球隊</span></div>
+    <div class="section-heading"><div><span class="eyebrow dark">TEAM DIRECTORY</span><h2>球隊資料庫</h2></div><span class="tag">OFFICIAL TEAM LOGOS</span></div>
     <div id="teamsGrid" class="teams-grid"></div>
     <div class="panel table-panel">
       <div class="panel-title"><h3>依本站已登錄賽果計算的戰績</h3><span class="muted small">不是官方即時排名</span></div>
@@ -73,12 +73,12 @@
     <div class="section-heading"><div><span class="eyebrow dark">PLAYER DATABASE</span><h2>球員資料庫</h2></div><span class="tag">可搜尋・可排序</span></div>
     <div class="toolbar"><input id="playerSearch" type="search" placeholder="搜尋球員或球隊…" aria-label="搜尋球員"><select id="playerTeamFilter" aria-label="依球隊篩選"></select><select id="statSelect" aria-label="排序數據"><option value="pts">得分 PPG</option><option value="reb">籃板 RPG</option><option value="ast">助攻 APG</option><option value="stl">抄截 SPG</option><option value="blk">阻攻 BPG</option><option value="tp">三分命中率</option></select></div>
     <div class="table-wrap"><table><thead><tr><th>球員</th><th>球隊</th><th>PTS</th><th>REB</th><th>AST</th><th>STL</th><th>BLK</th><th>FG%</th><th>3P%</th><th>FT%</th><th>資料來源</th></tr></thead><tbody id="playersTable"></tbody></table></div>
-    <p class="muted small">球員統計欄位為場均數據；請在新增資料時確認官方統計口徑與賽季範圍一致。</p>
+    <p class="muted small">球員統計欄位為場均數據；每筆資料顯示來源與更新日期。官方頁面目前尚未提供可讀取的 2026–27 球員統計。</p>
   </section>
 
   <section class="view" id="games">
-    <div class="section-heading"><div><span class="eyebrow dark">GAME CENTER</span><h2>賽事中心</h2></div><span class="tag">賽程・賽果</span></div>
-    <div id="gamesList" class="games-list"></div>
+    <div class="section-heading"><div><span class="eyebrow dark">GAME CENTER</span><h2>賽事中心</h2></div><span class="tag">已完成・未來賽事</span></div>
+    <div class="schedule-status"><b>賽程資料同步狀態</b><span>官方賽程頁面目前顯示完成賽事 0、未來賽事 0（頁面尚無可讀取項目）。可使用下方官方連結查詢，並於數據管理登錄經查核的比賽。</span><a href="https://tpbl.basketball/schedule" target="_blank" rel="noopener">開啟 TPBL 官方賽程 ↗</a></div><div id="gamesList" class="games-list"></div>
   </section>
 
   <section class="view" id="leaders">
