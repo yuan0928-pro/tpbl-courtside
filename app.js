@@ -31,6 +31,7 @@ function teamStats(){
   return TEAMS.map(team=>{
     let w=0,l=0;
     data.games.forEach(g=>{
+      if((g.status||'FINAL')!=='FINAL') return;
       if(g.home===team.name){g.hs>g.as?w++:l++;}
       if(g.away===team.name){g.as>g.hs?w++:l++;}
     });
@@ -40,7 +41,9 @@ function teamStats(){
 function sourceLabel(item){return item.sourceType==='official'?'官方資料':item.sourceType==='thirdparty'?'第三方參考':'人工補充';}
 function gameRow(g){
   const status=g.status||'FINAL';
-  return `<div class="game-row"><div class="game-teams">${esc(g.home)}<br>${esc(g.away)}</div><div class="score">${Number(g.hs)} : ${Number(g.as)}</div><div class="game-status">${esc(status)}</div></div>`;
+  const score=status==='UPCOMING'?'VS':`${Number(g.hs)} : ${Number(g.as)}`;
+  const label=status==='UPCOMING'?'未來賽程':'已完成';
+  return `<div class="game-row"><div class="game-teams">${esc(g.home)}<br>${esc(g.away)}</div><div class="score">${score}</div><div class="game-status">${label}</div></div>`;
 }
 function render(){
   $('teamCount').textContent=TEAMS.length;
@@ -49,7 +52,7 @@ function render(){
   $('dataStatus').textContent=data.players.length||data.games.length?'已建檔':'待匯入';
   $('teamTiles').innerHTML=TEAMS.map(t=>`<div class="team-tile"><img class="team-logo-mini" src="${t.logo}" alt="${esc(t.name)}隊徽" loading="lazy"><b>${esc(t.name)}</b><span>${esc(t.en)}</span><small>${esc(t.city)}</small></div>`).join('');
   $('teamsGrid').innerHTML=TEAMS.map(t=>`<article class="team-card"><img class="team-logo" src="${t.logo}" alt="${esc(t.name)}隊徽" loading="lazy"><div><h3>${esc(t.name)}</h3><p>${esc(t.en)}</p><small>${esc(t.city)}</small></div></article>`).join('');
-  const recent=[...data.games].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,4);
+  const recent=[...data.games].filter(g=>(g.status||'FINAL')==='FINAL').sort((a,b)=>b.date.localeCompare(a.date)).slice(0,4);
   $('recentGames').innerHTML=recent.length?recent.map(g=>`<div class="recent-item"><div class="date">${esc(g.date)} · ${sourceLabel(g)}</div>${gameRow(g)}</div>`).join(''):'<p class="empty">目前尚無已核對的賽事資料。可從「數據管理」新增。</p>';
   const q=$('playerSearch').value.trim().toLowerCase(),teamFilter=$('playerTeamFilter').value,sort=$('statSelect').value;
   const players=data.players.filter(p=>(p.name+' '+p.team).toLowerCase().includes(q)&&(!teamFilter||p.team===teamFilter))
@@ -57,7 +60,10 @@ function render(){
   $('playersTable').innerHTML=players.length?players.map(p=>`<tr><td>${esc(p.name)}</td><td>${esc(p.team)}</td><td>${fmt(p.pts)}</td><td>${fmt(p.reb)}</td><td>${fmt(p.ast)}</td><td>${fmt(p.stl)}</td><td>${fmt(p.blk)}</td><td>${fmt(p.fg)}%</td><td>${fmt(p.tp)}%</td><td>${fmt(p.ft)}%</td><td><span class="source-pill ${p.sourceType==='official'?'official':'manual'}">${sourceLabel(p)}</span></td><td>${esc(p.updated||'—')}</td></tr>`).join(''):'<tr><td colspan="12" class="empty-cell">尚無球員資料。請由官方數據頁查核後新增。</td></tr>';
   const standings=teamStats(),leader=standings[0]?.pct||0;
   $('teamsTable').innerHTML=standings.map((t,i)=>`<tr><td>${i+1}</td><td>${esc(t.name)}</td><td>${t.gp}</td><td>${t.w}</td><td>${t.l}</td><td>${t.gp?(t.pct*100).toFixed(1)+'%':'—'}</td><td>${t.gp&&i>0?(leader-t.pct).toFixed(3):'—'}</td></tr>`).join('');
-  $('gamesList').innerHTML=[...data.games].sort((a,b)=>b.date.localeCompare(a.date)).map(g=>`<article class="game-card"><div class="date">${esc(g.date)} · ${sourceLabel(g)}</div>${gameRow(g)}<p class="game-source">來源：${esc(g.source||'未填寫')}</p></article>`).join('')||'<div class="panel empty">目前沒有賽事紀錄。請先從官方賽程查核，再新增。</div>';
+  const gameCards=list=>list.map(g=>`<article class="game-card"><div class="date">${esc(g.date)} · ${sourceLabel(g)}</div>${gameRow(g)}<p class="game-source">來源：${esc(g.source||'未填寫')}</p></article>`).join('')||'<div class="panel empty">目前沒有已核對的資料。</div>';
+  const sortedGames=[...data.games].sort((a,b)=>a.date.localeCompare(b.date));
+  $('upcomingGames').innerHTML=gameCards(sortedGames.filter(g=>g.status==='UPCOMING'));
+  $('completedGames').innerHTML=gameCards(sortedGames.filter(g=>(g.status||'FINAL')==='FINAL').reverse());
   const leaderDefs=[['得分 PPG','pts'],['籃板 RPG','reb'],['助攻 APG','ast'],['抄截 SPG','stl'],['阻攻 BPG','blk']];
   $('leaderGrid').innerHTML=leaderDefs.map(([label,key])=>{
     const p=[...data.players].sort((a,b)=>(Number(b[key])||0)-(Number(a[key])||0))[0];
@@ -72,10 +78,13 @@ function fillTeams(){
 }
 $('addGameForm').addEventListener('submit',e=>{
   e.preventDefault();
-  const g={date:$('gameDate').value,home:$('homeTeam').value,away:$('awayTeam').value,hs:Number($('homeScore').value),as:Number($('awayScore').value),sourceType:$('gameSourceType').value,source:$('gameSource').value.trim(),status:'FINAL'};
+  const status=$('gameStatus').value;
+  const g={date:$('gameDate').value,home:$('homeTeam').value,away:$('awayTeam').value,hs:$('homeScore').value===''?null:Number($('homeScore').value),as:$('awayScore').value===''?null:Number($('awayScore').value),sourceType:$('gameSourceType').value,source:$('gameSource').value.trim(),status};
   if(g.home===g.away){$('gameMessage').textContent='主隊與客隊不能相同。';return;}
+  if(status==='FINAL'&&(g.hs===null||g.as===null)){$('gameMessage').textContent='已完成賽事請填寫雙方比分。';return;}
+  if(status==='UPCOMING'&&g.date<new Date().toISOString().slice(0,10)){$('gameMessage').textContent='未來賽程日期不能早於今天。';return;}
   if(!g.source){$('gameMessage').textContent='請填寫資料來源網址或說明。';return;}
-  data.games.push(g);save();render();$('gameMessage').textContent='比賽紀錄已儲存；排名依本站已登錄賽果計算。';e.target.reset();$('gameDate').value=new Date().toISOString().slice(0,10);
+  data.games.push(g);save();render();$('gameMessage').textContent=status==='UPCOMING'?'未來賽程已儲存；不會計入球隊戰績。':'比賽紀錄已儲存；排名依本站已登錄完賽賽果計算。';e.target.reset();$('gameDate').value=new Date().toISOString().slice(0,10);
 });
 $('addPlayerForm').addEventListener('submit',e=>{
   e.preventDefault();const val=id=>Number($(id).value)||0;

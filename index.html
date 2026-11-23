@@ -57,7 +57,7 @@
         <a href="https://tpbl.basketball/stats/teams" target="_blank" rel="noopener">官方球隊數據 ↗</a>
       </div>
     </div>
-    <p class="notice">資料原則：TPBL 官方資料優先。官方網站目前顯示 2026–27 球員數據與賽程清單尚無資料，因此本站不會自行捏造球員數據或賽果。官方隊徽使用 TPBL 官網公開頁面提供的圖檔。</p>
+    <p class="notice">資料原則：TPBL 官方資料優先。截至 2026/11/23 查核，官方網站的 2026–27 球員數據與賽程清單尚無可讀取資料，因此本站不會自行捏造球員數據或賽果。官方隊徽使用 TPBL 官網公開頁面提供的圖檔。</p>
   </section>
 
   <section class="view" id="teams">
@@ -78,7 +78,7 @@
 
   <section class="view" id="games">
     <div class="section-heading"><div><span class="eyebrow dark">GAME CENTER</span><h2>賽事中心</h2></div><span class="tag">已完成・未來賽事</span></div>
-    <div class="schedule-status"><b>賽程資料同步狀態</b><span>官方賽程頁面目前顯示完成賽事 0、未來賽事 0（頁面尚無可讀取項目）。可使用下方官方連結查詢，並於數據管理登錄經查核的比賽。</span><a href="https://tpbl.basketball/schedule" target="_blank" rel="noopener">開啟 TPBL 官方賽程 ↗</a></div><div id="gamesList" class="games-list"></div>
+    <div class="schedule-status"><b>賽程資料同步狀態</b><span>截至 2026/11/23 查核，官方賽程頁面顯示完成賽事 0、未來賽事 0（頁面尚無可讀取項目）。可使用下方官方連結查詢，並於數據管理登錄經查核的比賽。</span><a href="https://tpbl.basketball/schedule" target="_blank" rel="noopener">開啟 TPBL 官方賽程 ↗</a></div><div class="game-section"><h3>未來賽程</h3><div id="upcomingGames" class="games-list"></div></div><div class="game-section"><h3>已完成賽事</h3><div id="completedGames" class="games-list"></div></div>
   </section>
 
   <section class="view" id="leaders">
@@ -89,14 +89,15 @@
 
   <section class="view" id="manage">
     <div class="section-heading"><div><span class="eyebrow dark">DATA MANAGEMENT</span><h2>數據管理</h2></div><span class="tag">人工補充・來源追蹤</span></div>
-    <div class="admin-note"><b>資料輸入提醒</b><p>請優先依 TPBL 官方網站的同一賽季資料登錄。若是人工補充，請填寫來源網址或說明與資料日期。此版本資料儲存在目前瀏覽器，尚未與其他訪客共用。</p></div>
+    <div class="admin-note"><b>資料輸入提醒</b><p>請優先依 TPBL 官方網站的同一賽季資料登錄。新增比賽時可選擇「已完成」或「未來賽程」；未來賽程不需要比分，也不會計入戰績。若是人工補充，請填寫來源網址或說明。此版本資料儲存在目前瀏覽器，尚未與其他訪客共用。</p></div>
     <div class="content-grid">
       <form class="panel form" id="addGameForm">
         <h3>新增比賽紀錄</h3>
         <label>比賽日期<input id="gameDate" type="date" required></label>
+        <label>賽事狀態<select id="gameStatus"><option value="FINAL">已完成（輸入比分）</option><option value="UPCOMING">未來賽程（尚未開打）</option></select></label>
         <label>主隊<select id="homeTeam"></select></label>
         <label>客隊<select id="awayTeam"></select></label>
-        <div class="two-fields"><label>主隊得分<input id="homeScore" type="number" min="0" required></label><label>客隊得分<input id="awayScore" type="number" min="0" required></label></div>
+        <div class="two-fields"><label>主隊得分<input id="homeScore" type="number" min="0" placeholder="未開打可留白"></label><label>客隊得分<input id="awayScore" type="number" min="0" placeholder="未開打可留白"></label></div>
         <label>資料來源類型<select id="gameSourceType"><option value="official">TPBL 官方資料</option><option value="manual">人工補充</option></select></label>
         <label>來源網址／說明<input id="gameSource" placeholder="貼上官方賽事頁網址或補充說明" required></label>
         <button class="primary" type="submit">＋ 儲存比賽</button><p class="form-message" id="gameMessage" role="status"></p>
