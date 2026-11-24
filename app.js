@@ -9,6 +9,26 @@ const TEAMS = [
 ];
 const STORE='tpbl-courtside-v2';
 let data=loadData();
+let rosterData={teams:[],players:[]};
+async function loadRoster(){
+  try{
+    const res=await fetch('data/rosters.json');
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    rosterData=await res.json();
+    renderRoster();
+    $('playerCount').textContent=rosterData.players.length;
+    $('dataStatus').textContent='名單已載入';
+  }catch(err){
+    $('rosterStatus').textContent='名單載入失敗，請確認 data/rosters.json 已上傳';
+    $('rosterTable').innerHTML='<tr><td colspan="6" class="empty-cell">無法讀取球員名單檔案。</td></tr>';
+  }
+}
+function renderRoster(){
+  const q=$('playerSearch').value.trim().toLowerCase(),tf=$('playerTeamFilter').value;
+  const list=(rosterData.players||[]).filter(p=>(String(p.name||'')+' '+String(p.team_name||'')).toLowerCase().includes(q)&&(!tf||p.team_name===tf));
+  $('rosterTable').innerHTML=list.length?list.map(p=>`<tr><td>${esc(p.jersey_number??'—')}</td><td><b>${esc(p.name)}</b></td><td>${esc(p.team_name||'—')}</td><td>${esc(p.position||'—')}</td><td>${p.height_cm?esc(p.height_cm)+' cm':'—'}</td><td>${p.weight_kg?esc(p.weight_kg)+' kg':'—'}</td></tr>`).join(''):'<tr><td colspan="6" class="empty-cell">找不到符合條件的球員。</td></tr>';
+  $('rosterStatus').textContent=`顯示 ${list.length} / ${(rosterData.players||[]).length} 位球員`;
+}
 function loadData(){
   try{
     const saved=localStorage.getItem(STORE);
@@ -47,7 +67,7 @@ function gameRow(g){
 }
 function render(){
   $('teamCount').textContent=TEAMS.length;
-  $('playerCount').textContent=data.players.length;
+  $('playerCount').textContent=rosterData.players.length||data.players.length;
   $('gameCount').textContent=data.games.length;
   $('dataStatus').textContent=data.players.length||data.games.length?'已建檔':'待匯入';
   $('teamTiles').innerHTML=TEAMS.map(t=>`<div class="team-tile"><img class="team-logo-mini" src="${t.logo}" alt="${esc(t.name)}隊徽" loading="lazy"><b>${esc(t.name)}</b><span>${esc(t.en)}</span><small>${esc(t.city)}</small></div>`).join('');
@@ -55,6 +75,7 @@ function render(){
   const recent=[...data.games].filter(g=>(g.status||'FINAL')==='FINAL').sort((a,b)=>b.date.localeCompare(a.date)).slice(0,4);
   $('recentGames').innerHTML=recent.length?recent.map(g=>`<div class="recent-item"><div class="date">${esc(g.date)} · ${sourceLabel(g)}</div>${gameRow(g)}</div>`).join(''):'<p class="empty">目前尚無已核對的賽事資料。可從「數據管理」新增。</p>';
   const q=$('playerSearch').value.trim().toLowerCase(),teamFilter=$('playerTeamFilter').value,sort=$('statSelect').value;
+  if(rosterData.players.length)renderRoster();
   const players=data.players.filter(p=>(p.name+' '+p.team).toLowerCase().includes(q)&&(!teamFilter||p.team===teamFilter))
     .sort((a,b)=>(Number(b[sort])||0)-(Number(a[sort])||0));
   $('playersTable').innerHTML=players.length?players.map(p=>`<tr><td>${esc(p.name)}</td><td>${esc(p.team)}</td><td>${fmt(p.pts)}</td><td>${fmt(p.reb)}</td><td>${fmt(p.ast)}</td><td>${fmt(p.stl)}</td><td>${fmt(p.blk)}</td><td>${fmt(p.fg)}%</td><td>${fmt(p.tp)}%</td><td>${fmt(p.ft)}%</td><td><span class="source-pill ${p.sourceType==='official'?'official':'manual'}">${sourceLabel(p)}</span></td><td>${esc(p.updated||'—')}</td></tr>`).join(''):'<tr><td colspan="12" class="empty-cell">尚無球員資料。請由官方數據頁查核後新增。</td></tr>';
@@ -108,6 +129,7 @@ $('clearBtn').addEventListener('click',()=>{
   if(confirm('確定要清空目前瀏覽器中的球員與比賽資料嗎？建議先匯出備份。')){data={players:[],games:[]};save();render();}
 });
 fillTeams();
+loadRoster();
 $('gameDate').value=new Date().toISOString().slice(0,10);
 $('playerUpdated').value=new Date().toISOString().slice(0,10);
 render();
