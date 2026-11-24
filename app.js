@@ -15,6 +15,21 @@ async function loadRoster(){
     const res=await fetch('data/rosters.json');
     if(!res.ok) throw new Error('HTTP '+res.status);
     rosterData=await res.json();
+
+    // 重新渲染網站，更新球隊人數與球員名單
+    render();
+
+    $('playerCount').textContent=rosterData.players.length;
+    $('dataStatus').textContent='名單已載入';
+  }catch(err){
+    $('rosterStatus').textContent='名單載入失敗，請確認 data/rosters.json 已上傳';
+    $('rosterTable').innerHTML='<tr><td colspan="6" class="empty-cell">無法讀取球員名單檔案。</td></tr>';
+  }
+}{
+  try{
+    const res=await fetch('data/rosters.json');
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    rosterData=await res.json();
     renderRoster();
     $('playerCount').textContent=rosterData.players.length;
     $('dataStatus').textContent='名單已載入';
