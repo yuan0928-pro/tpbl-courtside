@@ -15,7 +15,7 @@ async function loadRoster(){
     const res=await fetch('data/rosters.json');
     if(!res.ok) throw new Error('HTTP '+res.status);
     rosterData=await res.json();
-    render();
+    renderRoster();
     $('playerCount').textContent=rosterData.players.length;
     $('dataStatus').textContent='名單已載入';
   }catch(err){

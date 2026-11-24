@@ -10,7 +10,7 @@
     {
       "team_id": 2,
       "name": "高雄全家海神",
-      "logo_url": "https://assets.tpbl.basketball/logos/aquas.webp",
+      "logo_url": "https://assets.tpbl.basketball/frontend/_nuxt/aquas.CB-Rq9NB.webp",
       "reported_player_count": 16,
       "included_player_count": 16,
       "roster_status": "complete",
@@ -19,7 +19,7 @@
     {
       "team_id": 3,
       "name": "福爾摩沙夢想家",
-      "logo_url": "https://assets.tpbl.basketball/logos/dreamers.webp",
+      "logo_url": "https://assets.tpbl.basketball/frontend/_nuxt/dreamers.8uP5AliT.webp",
       "reported_player_count": 16,
       "included_player_count": 16,
       "roster_status": "complete",
@@ -28,7 +28,7 @@
     {
       "team_id": 4,
       "name": "新竹御嵿攻城獅",
-      "logo_url": "https://assets.tpbl.basketball/logos/lioneers.webp",
+      "logo_url": "https://assets.tpbl.basketball/frontend/_nuxt/lioneers.DTfkuEJZ.webp",
       "reported_player_count": 16,
       "included_player_count": 16,
       "roster_status": "complete",
@@ -37,7 +37,7 @@
     {
       "team_id": 5,
       "name": "桃園台啤永豐雲豹",
-      "logo_url": "https://assets.tpbl.basketball/logos/leopards.webp",
+      "logo_url": "https://assets.tpbl.basketball/frontend/_nuxt/leopards.BGzlSG8M.webp",
       "reported_player_count": 15,
       "included_player_count": 15,
       "roster_status": "manual_roster_complete",
@@ -46,7 +46,7 @@
     {
       "team_id": 6,
       "name": "新北中信特攻",
-      "logo_url": "https://assets.tpbl.basketball/logos/dea.webp",
+      "logo_url": "https://assets.tpbl.basketball/frontend/_nuxt/dea.BEfNfG39.webp",
       "reported_player_count": 18,
       "included_player_count": 18,
       "roster_status": "complete",
@@ -55,7 +55,7 @@
     {
       "team_id": 7,
       "name": "新北國王",
-      "logo_url": "https://assets.tpbl.basketball/logos/kings.webp",
+      "logo_url": "https://assets.tpbl.basketball/frontend/_nuxt/kings.DsunMN-K.webp",
       "reported_player_count": 16,
       "included_player_count": 16,
       "roster_status": "complete",
@@ -64,7 +64,7 @@
     {
       "team_id": 8,
       "name": "臺北台新戰神",
-      "logo_url": "https://assets.tpbl.basketball/logos/mars.webp",
+      "logo_url": "https://assets.tpbl.basketball/frontend/_nuxt/mars.BbDWfkG6.webp",
       "reported_player_count": 17,
       "included_player_count": 17,
       "roster_status": "complete",
