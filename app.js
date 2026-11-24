@@ -15,7 +15,7 @@ async function loadRoster(){
     const res=await fetch('data/rosters.json');
     if(!res.ok) throw new Error('HTTP '+res.status);
     rosterData=await res.json();
-    renderRoster();
+    render();
     $('playerCount').textContent=rosterData.players.length;
     $('dataStatus').textContent='名單已載入';
   }catch(err){
@@ -26,9 +26,29 @@ async function loadRoster(){
 function renderRoster(){
   const q=$('playerSearch').value.trim().toLowerCase(),tf=$('playerTeamFilter').value;
   const list=(rosterData.players||[]).filter(p=>(String(p.name||'')+' '+String(p.team_name||'')).toLowerCase().includes(q)&&(!tf||p.team_name===tf));
-  $('rosterTable').innerHTML=list.length?list.map(p=>`<tr><td>${esc(p.jersey_number??'—')}</td><td><b>${esc(p.name)}</b></td><td>${esc(p.team_name||'—')}</td><td>${esc(p.position||'—')}</td><td>${p.height_cm?esc(p.height_cm)+' cm':'—'}</td><td>${p.weight_kg?esc(p.weight_kg)+' kg':'—'}</td></tr>`).join(''):'<tr><td colspan="6" class="empty-cell">找不到符合條件的球員。</td></tr>';
+  $('rosterTable').innerHTML=list.length?list.map(p=>`<tr><td>${esc(p.jersey_number??'—')}</td><td><button class="name-link" type="button" data-player-id="${esc(p.player_id)}"><b>${esc(p.name)}</b></button></td><td>${esc(p.team_name||'—')}</td><td>${esc(p.position||'—')}</td><td>${p.height_cm?esc(p.height_cm)+' cm':'—'}</td><td>${p.weight_kg?esc(p.weight_kg)+' kg':'—'}</td></tr>`).join(''):'<tr><td colspan="6" class="empty-cell">找不到符合條件的球員。</td></tr>';
   $('rosterStatus').textContent=`顯示 ${list.length} / ${(rosterData.players||[]).length} 位球員`;
 }
+function openDetail(viewType,id){
+  const root=$('detailContent'); let html='';
+  if(viewType==='team'){
+    const team=(rosterData.teams||[]).find(t=>String(t.team_id)===String(id)); if(!team)return;
+    const roster=(rosterData.players||[]).filter(p=>String(p.team_id)===String(id));
+    html=`<section class="team-profile-hero"><div class="team-profile-brand"><img src="${esc(team.logo_url||'')}" alt="${esc(team.name)}隊徽" onerror="this.style.display='none'"><div><span class="eyebrow">TEAM PROFILE · 2026–27</span><h1>${esc(team.name)}</h1><p>${esc(team.en_name||'TPBL TEAM')}</p></div></div><div class="profile-count"><strong>${roster.length}</strong><span>REGISTERED PLAYERS</span></div></section>
+    <div class="profile-stat-grid"><article><span>球員人數</span><b>${roster.length}</b></article><article><span>資料賽季</span><b>2026–27</b></article><article><span>名單狀態</span><b>${team.roster_status==='complete'?'已整理':'待補充'}</b></article></div>
+    <div class="panel table-panel"><div class="panel-title"><h3>球隊球員名單</h3><span class="muted small">點擊球員姓名查看個人頁面</span></div><div class="table-wrap"><table><thead><tr><th>背號</th><th>球員</th><th>位置</th><th>身高</th><th>體重</th></tr></thead><tbody>${roster.map(p=>`<tr><td>${esc(p.jersey_number??'—')}</td><td><button class="name-link" type="button" data-player-id="${esc(p.player_id)}"><b>${esc(p.name)}</b></button></td><td>${esc(p.position||'—')}</td><td>${p.height_cm?esc(p.height_cm)+' cm':'—'}</td><td>${p.weight_kg?esc(p.weight_kg)+' kg':'—'}</td></tr>`).join('')}</tbody></table></div></div>`;
+  } else {
+    const p=(rosterData.players||[]).find(x=>String(x.player_id)===String(id)); if(!p)return;
+    const team=(rosterData.teams||[]).find(t=>String(t.team_id)===String(p.team_id));
+    const img=p.image_url || (p.image_urls&& (p.image_urls.player||p.image_urls.avatar||p.image_urls.profile)) || '';
+    html=`<section class="player-profile-hero"><div class="player-visual">${img?`<img src="${esc(img)}" alt="${esc(p.name)}" onerror="this.style.display='none';this.nextElementSibling.hidden=false"><div class="player-placeholder" hidden>${esc(p.name.slice(0,1))}</div>`:`<div class="player-placeholder">${esc((p.name||'球').slice(0,1))}</div>`}<span class="jersey-watermark">${esc(p.jersey_number??'—')}</span></div><div class="player-identity"><span class="eyebrow">PLAYER PROFILE · 2026–27</span><div class="player-team-line">${team&&team.logo_url?`<img src="${esc(team.logo_url)}" alt="" onerror="this.style.display='none'">`:''}<span>${esc(p.team_name||'TPBL')}</span></div><h1>${esc(p.name)}</h1><div class="player-position">${esc(p.position||'POSITION TBC')}</div><p class="profile-disclaimer">球員註冊基本資料｜場均統計待官方數據核實後更新</p></div></section>
+    <div class="profile-stat-grid player-bio-grid"><article><span>背號</span><b>#${esc(p.jersey_number??'—')}</b></article><article><span>位置</span><b>${esc(p.position||'—')}</b></article><article><span>身高</span><b>${p.height_cm?esc(p.height_cm)+' cm':'—'}</b></article><article><span>體重</span><b>${p.weight_kg?esc(p.weight_kg)+' kg':'—'}</b></article><article><span>生日</span><b>${esc(p.birthday||'未提供')}</b></article></div>
+    <div class="content-grid profile-lower"><article class="panel"><div class="panel-title"><h3>球員基本資料</h3><span class="tag">ROSTER INFO</span></div><dl class="bio-list"><div><dt>所屬球隊</dt><dd>${esc(p.team_name||'—')}</dd></div><div><dt>球員位置</dt><dd>${esc(p.position||'—')}</dd></div><div><dt>註冊背號</dt><dd>${esc(p.jersey_number??'—')}</dd></div><div><dt>出生日期</dt><dd>${esc(p.birthday||'尚未取得')}</dd></div></dl>${team?`<button class="primary" type="button" data-team-id="${esc(team.team_id)}">查看 ${esc(team.name)} 球隊頁面</button>`:''}</article><article class="panel"><div class="panel-title"><h3>賽季數據</h3><span class="tag">2026–27</span></div><div class="stats-pending"><strong>—</strong><b>等待官方統計資料</b><p>目前已建立球員註冊名單，尚未取得可核實的本季場均數據，因此不顯示推測數值。</p></div></article></div>`;
+  }
+  root.innerHTML=html; $('detailTab').hidden=false; go('detail'); $('detailTab').hidden=false;
+  $('detailBack').onclick=()=>go(viewType==='team'?'teams':'players');
+}
+
 function loadData(){
   try{
     const saved=localStorage.getItem(STORE);
@@ -46,6 +66,7 @@ function go(view){
 }
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>go(b.dataset.view)));
 document.querySelectorAll('[data-goto]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.goto)));
+document.addEventListener('click',e=>{const player=e.target.closest('[data-player-id]');if(player){openDetail('player',player.dataset.playerId);return;}const team=e.target.closest('[data-team-id]');if(team&&team.dataset.teamId){openDetail('team',team.dataset.teamId);}});
 const teamNames=TEAMS.map(t=>t.name);
 function teamStats(){
   return TEAMS.map(team=>{
@@ -70,8 +91,8 @@ function render(){
   $('playerCount').textContent=rosterData.players.length||data.players.length;
   $('gameCount').textContent=data.games.length;
   $('dataStatus').textContent=data.players.length||data.games.length?'已建檔':'待匯入';
-  $('teamTiles').innerHTML=TEAMS.map(t=>`<div class="team-tile"><img class="team-logo-mini" src="${t.logo}" alt="${esc(t.name)}隊徽" loading="lazy"><b>${esc(t.name)}</b><span>${esc(t.en)}</span><small>${esc(t.city)}</small></div>`).join('');
-  $('teamsGrid').innerHTML=TEAMS.map(t=>`<article class="team-card"><img class="team-logo" src="${t.logo}" alt="${esc(t.name)}隊徽" loading="lazy"><div><h3>${esc(t.name)}</h3><p>${esc(t.en)}</p><small>${esc(t.city)}</small></div></article>`).join('');
+  $('teamTiles').innerHTML=TEAMS.map(t=>`<button class="team-tile team-tile-button" type="button" data-team-id="${(rosterData.teams||[]).find(x=>x.name===t.name)?.team_id??''}"><img class="team-logo-mini" src="${(rosterData.teams||[]).find(x=>x.name===t.name)?.logo_url||t.logo}" alt="${esc(t.name)}隊徽" loading="lazy"><b>${esc(t.name)}</b><span>${esc(t.en)}</span><small>${esc(t.city)}</small></button>`).join('');
+  $('teamsGrid').innerHTML=TEAMS.map(t=>{const rt=(rosterData.teams||[]).find(x=>x.name===t.name);return `<button class="team-card team-card-button" type="button" data-team-id="${rt?.team_id??''}"><img class="team-logo" src="${rt?.logo_url||t.logo}" alt="${esc(t.name)}隊徽" loading="lazy"><div><h3>${esc(t.name)}</h3><p>${esc(t.en)}</p><small>${rt?.included_player_count??0} 位球員 · ${esc(t.city)}</small></div><span class="team-card-arrow">→</span></button>`}).join('');
   const recent=[...data.games].filter(g=>(g.status||'FINAL')==='FINAL').sort((a,b)=>b.date.localeCompare(a.date)).slice(0,4);
   $('recentGames').innerHTML=recent.length?recent.map(g=>`<div class="recent-item"><div class="date">${esc(g.date)} · ${sourceLabel(g)}</div>${gameRow(g)}</div>`).join(''):'<p class="empty">目前尚無已核對的賽事資料。可從「數據管理」新增。</p>';
   const q=$('playerSearch').value.trim().toLowerCase(),teamFilter=$('playerTeamFilter').value,sort=$('statSelect').value;

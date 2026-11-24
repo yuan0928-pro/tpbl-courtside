@@ -1,24 +1,14 @@
-# TPBL COURTSIDE｜七隊球員名單整合網站版
+# TPBL COURTSIDE｜2026–27 PRO 球員資料平台
 
-本版已把 2026–27 七隊球員名單整合到網站的「球員資料庫」頁面。名單顯示背號、球員、球隊、位置、身高、體重，並支援搜尋與球隊篩選。賽季場均數據表獨立保留，尚未取得的數據不會自行填造。
+本版本保留原有總覽、球隊資料庫、球員資料庫、賽事中心、排行榜與數據管理，並新增職業聯盟風格的球隊專屬頁面與球員個人頁面。
 
-## GitHub + Netlify 更新步驟
-1. 下載並解壓縮本 ZIP。
-2. 打開裡面的 `tpbl-courtside` 資料夾。
-3. 進入 GitHub 的 `tpbl-courtside` Repository，選 Add file → Upload files。
-4. **把資料夾裡面的所有檔案和 `data` 資料夾一起上傳**。不要只上傳 ZIP，也不要只上傳 JSON。
-5. 確認 GitHub 根目錄直接看到 `index.html`、`app.js`、`styles.css`、`netlify.toml`，並且有 `data/rosters.json`。
-6. Commit changes。Netlify 連接 GitHub 時會自動重新部署。
-7. 部署完成後到網站的「球員資料庫」頁面；如果仍是舊畫面，按 Ctrl+F5 強制重新整理。
+## 部署
+將本資料夾內所有檔案與 `data` 資料夾內容上傳到 GitHub Repository 根目錄，確認 `index.html`、`app.js`、`styles.css` 與 `data/rosters.json` 路徑正確，再 Commit changes。Netlify 連接 GitHub 後會自動部署。
 
-正確檔案結構：
-```
-index.html
-app.js
-styles.css
-netlify.toml
-README.md
-data/rosters.json
-```
+## 新功能操作
+- 球隊資料庫：點擊球隊卡片進入球隊頁面。
+- 球員資料庫：點擊球員姓名進入個人頁面。
+- 球隊頁面可再點擊球員姓名；球員頁面可返回球隊頁面。
 
-注意：本站是非官方球迷網站。球員名單資料已整合；球員場均數據、排行榜及賽事紀錄仍需另行匯入，不會因名單載入而自動出現。此版本仍沿用原有瀏覽器 localStorage 儲存手動輸入資料。
+## 資料說明
+名單包含 7 隊、114 位球員。部分球員照片、生日或識別欄位未取得時會顯示佔位或「未提供」。賽季場均數據尚未匯入，不顯示虛構統計。本網站為非官方球迷專案。

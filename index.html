@@ -25,6 +25,7 @@
     <button class="tab active" data-view="overview">總覽</button>
     <button class="tab" data-view="teams">球隊資料庫</button>
     <button class="tab" data-view="players">球員資料庫</button>
+    <button class="tab" data-view="detail" id="detailTab" hidden>球員／球隊詳情</button>
     <button class="tab" data-view="games">賽事中心</button>
     <button class="tab" data-view="leaders">數據排行榜</button>
     <button class="tab" data-view="manage">數據管理</button>
@@ -62,6 +63,7 @@
 
   <section class="view" id="teams">
     <div class="section-heading"><div><span class="eyebrow dark">TEAM DIRECTORY</span><h2>球隊資料庫</h2></div><span class="tag">OFFICIAL TEAM LOGOS</span></div>
+    <p class="muted small">選擇任一球隊卡片，即可進入球隊專屬頁面並查看完整名單。</p>
     <div id="teamsGrid" class="teams-grid"></div>
     <div class="panel table-panel">
       <div class="panel-title"><h3>依本站已登錄賽果計算的戰績</h3><span class="muted small">不是官方即時排名</span></div>
@@ -72,9 +74,15 @@
   <section class="view" id="players">
     <div class="section-heading"><div><span class="eyebrow dark">PLAYER DATABASE</span><h2>球員資料庫</h2></div><span class="tag">可搜尋・可排序</span></div>
     <div class="toolbar"><input id="playerSearch" type="search" placeholder="搜尋球員或球隊…" aria-label="搜尋球員"><select id="playerTeamFilter" aria-label="依球隊篩選"></select><select id="statSelect" aria-label="排序數據"><option value="pts">得分 PPG</option><option value="reb">籃板 RPG</option><option value="ast">助攻 APG</option><option value="stl">抄截 SPG</option><option value="blk">阻攻 BPG</option><option value="tp">三分命中率</option></select></div>
+    <p class="muted small">點擊球員姓名即可查看個人球員頁面。</p>
     <div class="panel table-panel"><div class="panel-title"><h3>2026–27 球員名單</h3><span class="muted small" id="rosterStatus">載入球員名單中…</span></div><div class="table-wrap"><table><thead><tr><th>背號</th><th>球員</th><th>球隊</th><th>位置</th><th>身高</th><th>體重</th></tr></thead><tbody id="rosterTable"><tr><td colspan="6" class="empty-cell">正在載入名單…</td></tr></tbody></table></div></div>
     <div class="panel table-panel"><div class="panel-title"><h3>球員賽季數據</h3><span class="muted small">尚待匯入官方統計</span></div><div class="table-wrap"><table><thead><tr><th>球員</th><th>球隊</th><th>PTS</th><th>REB</th><th>AST</th><th>STL</th><th>BLK</th><th>FG%</th><th>3P%</th><th>FT%</th><th>資料來源</th></tr></thead><tbody id="playersTable"></tbody></table></div></div>
     <p class="muted small">上方名單為已整理的 2026–27 球員註冊資料；下方場均統計尚未匯入，空白不代表球員沒有數據。</p>
+  </section>
+
+  <section class="view" id="detail">
+    <div class="detail-toolbar"><button class="secondary" id="detailBack" type="button">← 返回上一頁</button><span class="tag">PLAYER & TEAM PROFILE</span></div>
+    <div id="detailContent"></div>
   </section>
 
   <section class="view" id="games">
